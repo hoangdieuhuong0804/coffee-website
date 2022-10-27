@@ -1,0 +1,1195 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffee Shop</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <!-- font awesome cdn link  -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <!-- custom css file link  -->
+  <link rel="stylesheet" href="styleLogin.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="/coffee website/css/style.css">
+  <link rel="stylesheet" href="/coffee website/css/slidecard.css">
+    
+  <link rel="stylesheet" href="cssformvalidate.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+    
+<style>
+
+  
+  .slider {
+    position: relative;
+    transform: translate(-180px, -40px);
+    
+  }
+  .username-login {
+    color: #000;
+  }
+  .user__form  {
+    width: 300px;
+    padding: 20px;
+    
+  }
+  .user__form > p {
+   
+    color: #000;
+  }
+</style>
+<body>
+    <div id="out">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <strong>Info Alert Message -</strong> You need to solve the below fields before going to the next step
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+    <div id="alert__suc" class="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success Alert Message -</strong> Đã thêm vào giỏ hàng thành công!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+    <div id="Alert__suc" class="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success Alert Message -</strong> Đã đăng nhập thành công!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+    <script>
+            $('#body').hide()
+            $('#alert__suc').hide()
+            $('#Alert__suc').hide()
+            $('#out').hide()
+
+    </script>
+  
+
+
+  
+<div id="login-body">
+    <div id="login-box">
+      <h1 id='status'>Login</h1>
+      <input type="text" id="email" name="email" placeholder="E-mail" />
+     
+      <br>
+      <input type="password" id="password" name="password" placeholder="Password" />
+      <br>
+      <input type="submit" id='login' name="login" value="Đăng Nhập" />
+       <p>Bạn chưa có tài khoản? vui lòng <a href="./formvalidate.html">Đăng ký</a></p>
+    </div>
+    
+  </div>
+  <style>
+    #login-body{
+     
+               height: 100vh;
+        background: linear-gradient(to top, #c79081 0%, #dfa579 100%);
+        display: flex;
+    }
+    #login{
+        margin-bottom: 40px;
+    }
+    #status {
+        padding-top: 20px;
+    }
+    #login-box{
+        margin: auto;
+        text-align: center;
+        /* margin: 220px auto; */
+        width: 500px;
+        height: auto;
+    }
+    #email, #password {
+        text-transform: lowercase;
+        margin-bottom: 10px;
+        width: 65%;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+  </style>
+<!-- connect database -->
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+  import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDdSVfa4j9mzDr2c95dvy4_FZ4HAt0Wu14",
+    authDomain: "fir-c7e92.firebaseapp.com",
+    databaseURL: "https://fir-c7e92-default-rtdb.firebaseio.com",
+    projectId: "fir-c7e92",
+    storageBucket: "fir-c7e92.appspot.com",
+    messagingSenderId: "1079816624463",
+    appId: "1:1079816624463:web:6c70ce2b1ff5cc71de8d3a"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+  const auth = getAuth();
+  
+
+
+ login.addEventListener('click',(e)=>{
+   var email = document.getElementById('email').value;
+   var password = document.getElementById('password').value;
+
+
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+
+        const dt = new Date();
+         update(ref(database, 'users/' + user.uid),{
+          last_login: dt,
+        })
+
+        $('#Alert__suc').show(0).delay(2000).hide(0)        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        alert('lỗi trong quá trình đăng nhập');
+  });
+
+ });
+//   $('#checkout').click(() => {
+//     var email = document.getElementById('email').value;
+//    var password = document.getElementById('password').value;
+//    const s1= $('#sl1').text();
+//    const o1= $('#oder1').text();
+//    const p1=$('#oder1__price').val();
+
+
+
+//       signInWithEmailAndPassword(auth, email, password)
+//       .then((userCredential) => {
+//         // Signed in 
+//         const user = userCredential.user;
+
+//         const dt = new Date();
+//          update(ref(database, 'order/' + user.uid),{
+//           last_login: dt,
+//           sanpham : o1,
+//           soluong: p1
+
+
+//         })
+
+//         // $('#Alert__suc').show(0).delay(2000).hide(0)        // ...
+//       })
+//       .catch((error) => {
+//         const errorCode = error.code;
+//         const errorMessage = error.message;
+      
+//   })
+// })
+ login.addEventListener('click',(e)=>{
+   var email = document.getElementById('email').value;
+   var password = document.getElementById('password').value;
+
+
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+
+        const dt = new Date();
+         update(ref(database, 'users/' + user.uid),{
+          last_login: dt,
+        })
+
+        // $('#Alert__suc').show(0).delay(2000).hide(0)        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        // alert('lỗi trong quá trình đăng nhập');
+  });
+
+ });
+
+const user = auth.currentUser;
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+      document.getElementById('username-login').innerHTML= user.email;
+      $('#body').show()
+      $('#Alert__suc').show(0).delay(2000).hide(0) 
+      $('#login-body').hide()
+
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
+
+    const uid = user.uid;
+    //bla bla bla
+    // ...
+  } else {
+    // User is signed out
+    // ...
+    //bla bla bla
+    $('#body').hide()
+  }
+});
+
+logout.addEventListener('click',(e)=>{
+
+   signOut(auth).then(() => {
+     // Sign-out successful.
+    alert('Bạn đã dăng xuất khỏi tài khoản cá nhân! bạn sẽ trở lại trang chủ')
+   }).catch((error) => {
+     // An error happened.
+     const errorCode = error.code;
+     const errorMessage = error.message;
+
+        alert(errorMessage);
+   });
+
+});
+
+</script>
+<!-- checkform validate -->
+<script>
+    $('email').on('input', checkUser);
+   
+    $('password').on('input', checkPass);
+    $('password').click(checkUser);
+
+    function checkUser() {
+        if ($('email').val() == "") {
+            $('#note').html('&times; Vui lòng nhập  tài khoản').css('color', 'red')
+            return false
+        } else {
+            $('#note').html('').css('color', '');
+            return true }
+    }
+    function checkPass() {
+        if ($('password').val().length == 0) {
+            $('#note2').html('&times; Vui lòng nhập  mật khẩu').css('color', 'red')
+            return false }
+        if ($('password').val().length < 7) {
+            $('#note2').html('&times; Mật khẩu phải tối thiểu 6 kí tự').css('color', 'red')
+            return false
+        } else {
+            $('#note2').html('').css('color', '');
+            return true }
+    }
+    
+    function checkLogin() {
+        if ($('email').val() == "") {
+            $('#note').html('&times; Vui lòng nhập  tài khoản').css('color', 'red')
+        } else
+            $('#note').html('').css('color', '');
+        if ($('password').val().length < 7) {
+            $('#note2').html('&times; Vui lòng nhập  mật khẩu').css('color', 'red')
+        } else
+            $('#note2').html('').css('color', '');
+
+
+            if(checkPass() && checkUser()) {
+            $("#Alert").show(0).delay(3000).hide(0);
+        } else $("#waral").show(0).delay(3000).hide(0);
+    }
+
+
+</script>
+
+
+<!-- body -->
+
+<section id = "body">
+  
+
+    <!-- header section starts  -->
+
+    <header class="header">
+
+        <a href="#" class="logo">
+            <!-- <img  src="https://gardeniacoffee.vn/wp-content/uploads/2020/09/Gardenia_logo_white.png" alt=""> -->
+            <!-- <h1 style="color: #fff;">𝑮𝒂𝒓𝒅𝒆́𝒏𝒊𝒂</h1> -->
+        </a>
+
+        <nav class="navbar">
+            <a href="#home">Trang chủ</a>
+            <a href="#about">Giới thiệu</a>
+            <a href="#menu">thực đơn</a>
+            <a href="#products">sản phẩm</a>
+            <a href="#review">đánh giá</a>
+            <a href="#blogs">bài viết</a>
+        </nav>
+
+        <div class="icons">
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-bars" id="menu-btn"></div>
+                <div class="icon__user">
+                    <i class='bx bxs-user'>
+                        <div class="user__form" id="userf">
+                          <p style="color: #000; font-size: 18px;">Xin chào <p id="username-login" style="color: #000; font-size: 18px;"></p></p>
+                            <div class="row">
+                              <a href="/coffee website/index.html" >
+                                <button id="logout">Đăng xuất
+                                </button>
+                            </a>
+                              
+                            </div>
+                          
+                       
+                    </div>
+                    </i>
+
+                </div>
+                    
+
+                    
+               
+           
+        </div>
+      
+
+        <div class="search-form">
+            <input type="search" id="search-box" placeholder="search here...">
+            <label for="search-box" class="fas fa-search"></label>
+        </div>
+
+        <div class="cart-items-container">
+            <div class="cart-item" id="c1">
+                <span class="fas fa-times" id = "close1"></span>
+                <img class = "cart__icon"src="https://cdn.tasteatlas.com//images/ingredients/90e40250d4124302a5e936f1ae4cd909.jpg?w=905&h=510" alt="">
+                <div class="content">
+                    <h3 id="oder1">cart item 01</h3>
+                    <div id = "oder1__price"class="price">$15.99/-</div>
+                    <span>số lượng: <div class="price" id="sl1">-1</div></span>
+                </div>
+            </div>
+            <div class="cart-item" id="c2">
+                <span class="fas fa-times" id = "close2"></span>
+                <img class = "cart__icon"src="https://cdn.tasteatlas.com//images/ingredients/3bfd54a1a42c41dfa997c900426e44e7.jpg?width=320&height=205" alt="">
+                <div class="content">
+                    <h3  id = "oder2">cart item 02</h3>
+                    <div class="price" id="oder2__price">$15.99/-</div>
+                    <span>số lượng: <div class="price" id="sl2">-1</div></span>
+                </div>
+            </div>
+            <div class="cart-item" id="c3">
+                <span class="fas fa-times" id = "close3"></span>
+                <img class = "cart__icon"src="https://cdn.tasteatlas.com//images/ingredients/b3681cd11af24b17affd322a68047181.jpg?width=320&height=205" alt="">
+                <div class="content">
+                    <h3 id = "oder3">cart item 03</h3>
+                    <div class="price" id="oder3__price">$15.99/-</div>
+                    <span>số lượng: <div class="price" id="sl3">-1</div></span>
+
+                </div>
+            </div>
+            <div class="cart-item" id="c4">
+                <span class="fas fa-times" id = "close4"></span>
+                <img class = "cart__icon"src="https://cdn.tasteatlas.com//images/ingredients/7be8ab3dfeaf493294eca3fe67fac8ed.jpg?width=320&height=205" alt="">
+                <div class="content">
+                    <h3 id = "oder4">cart item 04</h3>
+                    <div class="price" id="oder4__price">$200.000 VND/-</div>
+                    <span>số lượng: <div class="price" id="sl4">-1</div></span>
+
+                </div>
+            </div>
+            <div class="cart-item" id="c5">
+                <span class="fas fa-times" id = "close5"></span>
+                <img class = "cart__icon"src="https://cdn.tasteatlas.com//images/ingredients/b442cec2da1d451f834f013ae36b360d.jpg?width=320&height=205" alt="">
+                <div class="content">
+                    <h3 id = "oder5">cart item 05</h3>
+                    <div class="price" id="oder5__price">$200.000 VND/-</div>
+                    <span>số lượng: <div class="price" id="sl5">-1</div></span>
+
+                </div>
+            </div>
+            <div class="cart-item" id="c6">
+                <span class="fas fa-times" id = "close6"></span>
+                <img class = "cart__icon"src="https://cdn.tasteatlas.com//images/ingredients/ede9652f559e4948808c058843c97574.jpg?width=320&height=205" alt="">
+                <div class="content">
+                    <h3 id = "oder6">cart item 05</h3>
+                    <div class="price" id="oder6__price">$200.000 VND/-</div>
+                    <span>số lượng: <div class="price" id="sl6">-1</div></span>
+
+                </div>
+            </div>
+            <a  class="btn" id="checkout">checkout now</a>
+        </div>
+
+    </header>
+
+    <!-- header section ends -->
+
+    <!-- home section starts  -->
+
+    <!-- <img src="nv.png" alt="" class="img-responsive"> -->
+
+
+    <section class="home" id="home">
+
+       
+        <!-- slide-start -->
+        <div class="slider">
+            <div class="slides">
+                <!--radio buttons start-->
+                <input type="radio" name="radio-btn" id="radio1">
+                <input type="radio" name="radio-btn" id="radio2">
+                <input type="radio" name="radio-btn" id="radio3">
+                <input type="radio" name="radio-btn" id="radio4">
+                <!--radio buttons end-->
+                <!--slide images start-->
+                <div class="slide first">
+                    <img src="nv.png" alt="">
+                </div>
+                <div class="slide">
+                    <video autoplay muted loop src="video.mp4" type="video/mp4" class="video"></video>
+                    <!-- <img src="2.jpg" alt=""> -->
+                </div>
+                <div class="slide">
+                    <img src="2.jpg" alt="">
+                </div>
+                <div class="slide">
+                    <img src="3.jpg" alt="">
+                </div>
+                <!--slide images end-->
+                <!--automatic navigation start-->
+                <div class="navigation-auto">
+                    <div class="auto-btn1"></div>
+                    <div class="auto-btn2"></div>
+                    <div class="auto-btn3"></div>
+                    <div class="auto-btn4"></div>
+                </div>
+                <!--automatic navigation end-->
+            </div>
+            <!--manual navigation start-->
+            <div class="navigation-manual">
+                <label for="radio1" class="manual-btn"></label>
+                <label for="radio2" class="manual-btn"></label>
+                <label for="radio3" class="manual-btn"></label>
+                <label for="radio4" class="manual-btn"></label>
+            </div>
+            <!--manual navigation end-->
+        </div>
+        <!--image slider end-->
+        <script type="text/javascript">
+            var counter = 1;
+            setInterval(function () {
+
+                document.getElementById('radio' + counter).checked = true;
+                counter++;
+                if (counter > 4) {
+                    counter = 1;
+
+                }
+            }, 10000);
+        </script>
+        <!-- slide-end -->
+
+        </div>
+
+    </section>
+
+    <section class="about" id="about">
+
+        <h1 class="heading"> <span>Gadénia – Coffee n Bakery</h1>
+        <p>Câu chuyện về một quán Cà Phê nhỏ. Có hương Cà Phê ấm. Mùi bánh thơm. Vườn cây xanh mát. Có thêm chút nhạc.
+            Và những câu chuyện khác chúng mình đợi bạn ghé quán để cùng nhau thủ thỉ …</p>
+        <div class="row">
+
+            <div class="image">
+                <img src="https://gardeniacoffee.vn/wp-content/uploads/2017/06/about-2.jpg" alt="">
+            </div>
+
+            <div class="content">
+                <h3>COFFEE CHẤT LƯỢNG <br> TẠI QUÁN CHÚNG TÔI</h3>
+                <p>Chúng mình luôn coi những vị khách ghé quán là những  người bạn, bạn mới quen hay thân thiết
+                    chúng mình đều  muốn đem câu chuyện của Gardénia để kể cho các bạn  nghe</p>
+
+                <a href="" class="btn">Xem toàn bộ menu </a>
+                <!-- <img src="https://gardeniacoffee.vn/wp-content/uploads/2017/05/img10.png" class="image-sub" alt=""> -->
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- menu section starts  -->
+
+    <section class="menu" id="menu">
+
+        <h1 class="heading"> <span>thực đơn</span> </h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <img src="https://cdn.tasteatlas.com//images/ingredients/90e40250d4124302a5e936f1ae4cd909.jpg?w=905&h=510"
+                    alt="">
+                <h3 id="name1">Espresso</h3>
+                <div class="price" id="price1">20.000 VND</div>
+                
+                
+
+                <div class="buttons_added">
+                    
+                    <input  class="iq input-qty1" max="100" min="1" name="" type="number" value="1">
+                    
+                  </div>
+                  
+                  <div >
+                    <p class="btn" id = "add1">add to cart</p>
+                  </div>
+                </div>
+
+            <div class="box">
+                <img src="https://cdn.tasteatlas.com//images/ingredients/3bfd54a1a42c41dfa997c900426e44e7.jpg?width=320&height=205"
+                    alt="">
+                <h3 id = "name2">Cuban Espresso</h3>
+                <div class="price" id="price2">30.000 VND</div> 
+                <div class="buttons_added">
+                    
+                    <input aria-label="quantity" class="iq input-qty2" max="100" min="1" name="" type="number" value="1">
+                    
+                  </div>
+                  <div>
+
+                      <p class="btn" id = "add2">add to cart</p>
+                  </div>
+            </div>
+
+            <div class="box">
+                <img src="https://cdn.tasteatlas.com//images/ingredients/b3681cd11af24b17affd322a68047181.jpg?width=320&height=205"
+                    alt="">
+                <h3 id="name3">Cortado</h3>
+                <div class="price" id="price3">20.000 VND</div>
+                <div class="buttons_added">
+                    
+                    <input aria-label="quantity" class="iq input-qty3" max="100" min="1" name="" type="number" value="1">
+                    
+                  </div>
+                  <script>
+                   
+                  </script>
+                  <div>
+
+                      <p class="btn" id = "add3">add to cart</p>
+                  </div>
+            </div>
+
+            <div class="box">
+                <img src="https://cdn.tasteatlas.com//images/ingredients/7be8ab3dfeaf493294eca3fe67fac8ed.jpg?width=320&height=205"
+                    alt="">
+                <h3 id="name4">Café au lait (New Orleans)</h3>
+                <div class="price" id="price4">20.000 VND</div>
+                <div class="buttons_added">
+                    
+                    <input aria-label="quantity" class="iq input-qty4" max="100" min="1" name="" type="number" value="1">
+                    
+                  </div>
+                  
+                 <div>
+
+                     <p class="btn" id = "add4">add to cart</p>
+                 </div>
+            </div>
+
+            <div class="box">
+                <img src="https://cdn.tasteatlas.com//images/ingredients/b442cec2da1d451f834f013ae36b360d.jpg?width=320&height=205"
+                    alt="">
+                <h3 id="name5">Kopi luwak</h3>
+                <div class="price" id="price5">20.000 VND</div>
+                <div class="buttons_added">
+                    
+                    <input aria-label="quantity" class="iq input-qty5" max="100" min="1" name="" type="number" value="1">
+                    
+                  </div>
+                  <div>
+
+                      <p class="btn" id = "add5">add to cart</p>
+                  </div>
+            </div>
+
+            <div class="box">
+                <img src="https://cdn.tasteatlas.com//images/ingredients/ede9652f559e4948808c058843c97574.jpg?width=320&height=205"
+                    alt="">
+                <h3 id="name6">Long Black</h3>
+                <div class="price" id="price6">20.000 VND</div>
+                <div class="buttons_added">
+                    
+                    <input aria-label="quantity" class=" iq input-qty6" max="100" min="1" name="" type="number" value="1">
+                    
+                  </div>
+                  <div>
+
+                  </div>
+                  <p class="btn" id = "add6">add to cart</p>
+                
+            </div>
+
+        </div>
+        <!-- so luong  -->
+      
+        <!-- add cart  -->
+        <script>
+            if($('#sl1').text() =="-1") {
+                $('#c1').hide()
+            }
+            if($('#sl2').text() =="-1") {
+                $('#c2').hide()
+            }
+            if($('#sl3').text() =="-1") {
+                $('#c3').hide()
+            }
+            if($('#sl4').text() =="-1") {
+                $('#c4').hide()
+            }
+            if($('#sl5').text() =="-1") {
+                $('#c5').hide()
+            }
+            if($('#sl6').text() =="-1") {
+                $('#c6').hide()
+            }
+
+            $('#close1').click(function() {
+                $('#c1').hide()
+            })
+            $('#close2').click(function() {
+                $('#c2').hide()
+            })
+            $('#close3').click(function() {
+                $('#c3').hide()
+            })
+            $('#close4').click(function() {
+                $('#c4').hide()
+            })
+            $('#close5').click(function() {
+                $('#c5').hide()
+            })
+            $('#close6').click(function() {
+                $('#c6').hide()
+            })
+            $('#add1').click(function(){
+                const p = $('#price1').text();
+                
+                $('#alert__suc').show(0).hide(2000).hide(0)
+                $('#c1').show()
+
+                $('#oder1').text($('#name1').text())
+                $('#oder1__price').text(p)
+                $('#sl1').text($('.input-qty1').val())
+            })
+            $('#add2').click(function(){
+                 $('#alert__suc').show(0).hide(2000).hide(0)
+                $('#c2').show()
+                $('#oder2').text($('#name2').text())
+                $('#oder2__price').text($('#price2').text())
+                $('#sl2').text($('.input-qty2').val())
+            })
+            $('#add3').click(function(){
+                 $('#alert__suc').show(0).hide(2000).hide(0)
+                $('#c3').show()
+                $('#oder3').text($('#name3').text())
+                $('#oder3__price').text($('#price3').text())
+                $('#sl3').text($('.input-qty3').val())
+            })
+            $('#add4').click(function(){
+                 $('#alert__suc').show(0).hide(2000).hide(0)
+                $('#c4').show()
+                $('#oder4').text($('#name4').text())
+                $('#oder4__price').text($('#price4').text())
+                $('#sl4').text($('.input-qty4').val())
+            })
+            $('#add5').click(function(){
+                 $('#alert__suc').show(0).hide(2000).hide(0)
+                $('#c5').show()
+                $('#oder5').text($('#name5').text())
+                $('#oder5__price').text($('#price5').text())
+                $('#sl5').text($('.input-qty5').val())
+            })
+            $('#add6').click(function(){
+                 $('#alert__suc').show(0).hide(2000).hide(0)
+                $('#c6').show()
+                $('#oder6').text($('#name6').text())
+                $('#oder6__price').text($('#price6').text())
+                $('#sl6').text($('.input-qty6').val())
+            })
+            
+
+        </script>
+
+    </section>
+
+    <!-- menu section ends -->
+
+    <section class="products" id="products">
+
+        <h1 class="heading"> <span>sản phẩm</span> </h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <div class="icons">
+                    <a href="#" class="fas fa-shopping-cart"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="images/product-1.png" alt="">
+                </div>
+                <div class="content">
+                    <h3>NICARAGU COFFFE</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="price">200.000 VND </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="icons">
+                    <a href="#" class="fas fa-shopping-cart"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="images/product-2.png" alt="">
+                </div>
+                <div class="content">
+                    <h3>fresh coffee</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="price">200.000 VND</div>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="icons">
+                    <a href="" class="fas fa-shopping-cart"></a>
+                    <a href="" class="fas fa-heart"></a>
+                    <a href="" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="images/product-3.png" alt="">
+                </div>
+                <div class="content">
+                    <h3>fresh coffee</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="price">200.000 VND</div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--  section starts  -->
+
+    <h1 style="margin-top: 25px;" class="heading"> <span>Đánh giá</span> </h1>
+   
+    
+
+    <div class="home-review">
+
+
+            <div class="review">
+
+                <div class="swiper mySwiper container">
+                    <div class="swiper-wrapper content">
+
+                        <div class="swiper-slide card">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://i.pinimg.com/564x/07/58/1d/07581d450ffab0b1c5db6e682d032daa.jpg"
+                                        alt="">
+                                </div>
+
+
+
+                                <div class="name-profession">
+                                    <span class="name">Đặng Thùy Trinh</span>
+                                    <span class="profession">Không gian siêu lãng mạn, đẹp, mình rất thích cách trang
+                                        trí gần gũi thiêu nhiên, thức uống ngon giá lại hợp túi tiền của mình</span>
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i style="" class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide card">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://i.pinimg.com/564x/e4/1c/ab/e41cab2fa844fa78ff8183258493c71f.jpg"
+                                        alt="">
+                                </div>
+
+
+
+                                <div class="name-profession">
+                                    <span class="name">Hoàng Nam</span>
+                                    <span class="profession">Một ly cafe ngon là phải vừa ngọt vừa đắng. Một tình yêu lí
+                                        tưởng là một tình yêu vừa ngọt nào, vừa đắng cay.</span>
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide card">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://i.pinimg.com/564x/8f/ac/58/8fac583966d5d2db3b78d9a4cbd3f63d.jpg"
+                                        alt="">
+                                </div>
+
+
+
+                                <div class="name-profession">
+                                    <span class="name">Uyển Nhi</span>
+                                    <span class="profession">Mình thích bánh ở đây, dặc biệt là bánh phô mai rất thơm
+                                        ngon nên cuối tuần hay ghé Gar để vừa cafe vừa làm việc nhân nhi tách cafe miếng
+                                        bánh</span>
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide card">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://i.pinimg.com/564x/e4/47/b3/e447b3d503b45567fe5f158502c6de3c.jpg"
+                                        alt="">
+                                </div>
+                                <div class="name-profession">
+                                    <span class="name">Minh Quân</span>
+                                    <span class="profession">Quán có view đẹp, đồ uống ngon, phục vụ nói chuyên chuyện
+                                        nhẹ nhàng.</span>
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide card">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://i.pinimg.com/564x/ff/77/0e/ff770ef913cb8b5961d5416dd193bb82.jpg"
+                                        alt="">
+                                </div>
+
+
+
+                                <div class="name-profession">
+                                    <span class="name">Trần Vũ</span>
+                                    <span class="profession">Địa điểm lý tưởng để hẹn bạn bè, tám chuyện phải gọi là
+                                        đỉnh của chóp</span>
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide card">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://i.pinimg.com/564x/3f/33/6c/3f336cafb0e71cf80e24e7e38a41ef57.jpg"
+                                        alt="">
+                                </div>
+
+
+
+                                <div class="name-profession">
+                                    <span class="name">Hạ Vy</span>
+                                    <span class="profession">Quán view đẹp, checkin thoải mái, ảnh đăng mãi không
+                                        hết</span>
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide card">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://i.pinimg.com/564x/eb/d7/ff/ebd7ff72917e9e67e5a3c57b70012cbe.jpg"
+                                        alt="">
+                                </div>
+
+
+
+                                <div class="name-profession">
+                                    <span class="name">Kiều Trinh</span>
+                                    <span class="profession"></span>
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide card">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://i.pinimg.com/564x/8a/ca/01/8aca016a4e2209c6c87a9971210381d7.jpg"
+                                        alt="">
+                                </div>
+
+
+
+                                <div class="name-profession">
+                                    <span class="name">Ngọc Như</span>
+                                    <span class="profession"></span>
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide card">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://i.pinimg.com/564x/02/f6/83/02f68320fe28f87cc76210b37a13d0d6.jpg"
+                                        alt="">
+                                </div>
+
+
+
+                                <div class="name-profession">
+                                    <span class="name">Thu Hương</span>
+                                    <span class="profession"></span>
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Swiper JS -->
+
+    
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+
+    <!-- Initialize Swiper -->
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 3,
+            spaceBetween: 30,
+            slidesPerGroup: 3,
+            loop: true,
+            loopFillGroupWithBlank: true,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    </script>
+    </div>
+
+
+
+    <!-- review section ends -->
+
+    <!-- contact section starts  -->
+
+
+    <!-- contact section ends -->
+
+    <!-- blogs section starts  -->
+
+    <section class="blogs" id="blogs">
+
+        <h1 class="heading"> <span>Bài Viết</span> </h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <div class="image">
+                    <img src="images/blog-1.jpeg" alt="">
+                </div>
+                <div class="content">
+                    <a href="#" class="title">CÁC YẾU TỐ ĐỂ CÓ MỘT TÁCH CÀ PHÊ NGON</a>
+                    <span>by admin / 21st april, 2022</span>
+                    <p>Quả cà phê mọc trên cây thường có hai hạt trong lòng nằm đối xứng nhau. Vì thế, bạn thường thấy
+                        cấu trúc hạt cà phê có một mặt tròn, còn mặt kia thì dẹt. Có lẽ bởi phải nhường nhịn và chia sẻ
+                        chỗ ở cho nhau nên hai hạt trong một quả sẽ được định hình như vậy. Tuy nhiên có một loại quả cà
+                        phê đặc biệt hơn một chút, trong quá trình sinh trưởng của mình, nó chỉ cho ra một hạt bên
+                        trong...</p>
+                    <a href="#" class="btn">read more</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="image">
+                    <img src="images/blog-2.jpeg" alt="">
+                </div>
+                <div class="content">
+                    <a href="#" class="title">DA LAT COFFEE, SẢN PHẨM MỚI TỪ STARBUCKS</a>
+                    <span>by admin / 21st april, 2022 </span>
+                    <p>Quả cà phê mọc trên cây thường có hai hạt trong lòng nằm đối xứng nhau. Vì thế, bạn thường thấy
+                        cấu trúc hạt cà phê có một mặt tròn, còn mặt kia thì dẹt. Có lẽ bởi phải nhường nhịn và chia sẻ
+                        chỗ ở cho nhau nên hai hạt trong một quả sẽ được định hình như vậy.</p>
+                    <a href="#" class="btn">read more</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="image">
+                    <img src="images/blog-3.jpeg" alt="">
+                </div>
+                <div class="content">
+                    <a href="#" class="title">GARDÉNIA COFFEE, CHUYỆN BÂY GIỜ MỚI KỂ</a>
+                    <span>by admin / 21st april, 2022</span>
+                    <p>Chuỗi Gardénia Bakery n Coffee có
+                        Không gian xanh tươi mát với khu vườn nhỏ xinh
+                        Đa dạng không gian để chill cùng bạn bè, gia đình
+                        Hay chọn một góc riêng cho việc hội họp, học tập
+                        Với menu thức uống đa dạng, bánh ngon tươi mới mỗi ngày
+                        Một chút nhạc, chút thơ, chút phảng phất mùi thơm cafe, mùi bánh mới nướng</p>
+                    <a href="#" class="btn">read more</a>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- blogs section ends -->
+
+    <!-- footer section starts  -->
+
+    <section class="footer">
+
+        <div class="share">
+            <a href="#" class="fab fa-facebook-f"></a>
+            <a href="#" class="fab fa-twitter"></a>
+            <a href="#" class="fab fa-instagram"></a>
+            <a href="#" class="fab fa-linkedin"></a>
+            <a href="#" class="fab fa-pinterest"></a>
+        </div>
+
+        <div class="links">
+            <a href="#">trang chủ</a>
+            <a href="#">Giói thiệu</a>
+            <a href="#">Thực đơn</a>
+            <a href="#">Sản phẩm</a>
+            <a href="#">Đánh giá</a>
+            <a href="#">bài viết</a>
+        </div>
+
+        <div class="credit"></div>
+
+    </section>
+
+    <!-- footer section ends -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- custom js file link  -->
+    
+
+</body>
+
+</html>
+</section>
+
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
+
+
+</html>

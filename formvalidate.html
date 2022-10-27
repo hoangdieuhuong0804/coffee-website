@@ -1,0 +1,327 @@
+<html>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffee Shop</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="styleLogin.css">
+  <link rel="stylesheet" href="cssformvalidate.css">
+  <link rel="stylesheet" href="./assets/css/font/themify-icons/themify-icons.css">
+  <link rel="stylesheet" href="assets/css/fontawesome-free-6.1.1-web/css/all.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+<body>
+  <style>
+    #note,#note2,#note3,#note4 {
+        color: red;
+    }
+</style>
+<div id="waral" style="position: fixed; top: 0; right: 0; width: 40%;">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <strong>Warning Alert Message -</strong> Có lỗi xãy ra
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+</div>
+<div id="Alert" style="position: fixed; top:0; right: 0; width: 40%;">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fa-solid fa-circle-check" ></i>
+        <strong>Success Alert Message -</strong> Đăng ký thành công
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+</div>
+<script>
+    $('#Alert').hide();
+    $('#waral').hide();
+
+</script>
+  <section class="job-post" style="background: linear-gradient(to top, #c79081 0%, #dfa579 100%);">
+    
+                
+                <div class="form-acc">
+                    <h3 class="header-form">
+                       
+                    </h3>
+                    <div class="mb-3">
+                        
+                        <input type="text" class="form-control" id="username"
+                            placeholder="Tên đăng nhập">
+                        <p id="note"></p>
+                    </div>
+                    <div class="mb-3">
+                       
+                        <input type="text" class="form-control" id="email" placeholder="Email">
+                        <p id="note2"></p>
+                    </div>
+                    <div class="mb-3">
+                       
+                        <input type="password" class="form-control" id="password" placeholder="Mật khẩu">
+                        <p id="note3"></p>
+                    </div>
+                    <div class="mb-3">
+                        
+                        <input type="password" class="form-control" id="username4"
+                            placeholder="Nhập lại mật khẩu">
+                        <p id="note4"></p>
+                    </div>
+
+                    <div class="col-12">
+                        
+                        <button id = "sighUp" type="submit" class="btn btn-primary" onclick="CheckFormValidate()">Đăng kí</button>
+
+                    </div>
+                    <div class="register">
+                        Bạn đã có tài khoản? Vui lòng 
+                        <a href="./sigin.html">Đăng nhập</a>
+                    </div>
+                </div>
+        
+</section>
+
+</body>
+<!-- form validation  -->
+  <script>
+    function CheckFormValidation() {
+      var x = document.getElementById('username').value;
+      var y = document.getElementById('email').value;
+      var z = document.getElementById('password').value;
+      if (x==''||y==''||z=='') {
+        alert('Vui lòng nhập đầy đủ thông tin vào ô trống')
+      }
+    }
+  </script>
+
+
+<!-- connect database -->
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+  import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDdSVfa4j9mzDr2c95dvy4_FZ4HAt0Wu14",
+    authDomain: "fir-c7e92.firebaseapp.com",
+    databaseURL: "https://fir-c7e92-default-rtdb.firebaseio.com",
+    projectId: "fir-c7e92",
+    storageBucket: "fir-c7e92.appspot.com",
+    messagingSenderId: "1079816624463",
+    appId: "1:1079816624463:web:6c70ce2b1ff5cc71de8d3a"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+  const auth = getAuth();
+
+sighUp.addEventListener('click',(e) => {
+  
+  CheckFormValidate()
+  var email = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
+  var username = document.getElementById('username').value;
+     
+    
+    
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+     // Signed in 
+      const user = userCredential.user;
+
+      set(ref(database, 'users/' + user.uid),{
+          username: username,
+          email: email,
+      })
+
+      $("#Alert").show(0).delay(3000).hide(0);
+      
+      
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      $("#waral").show(0).delay(3000).hide(0);
+      
+
+    });
+
+}); 
+
+
+
+
+
+
+
+</script>
+
+<!-- form validate -->
+<script>
+  function CheckFormValidate() {
+      CheckFormValidateEmail()
+      CheckFormValidatePass()
+      CheckFormValidateUser()
+  
+    
+      if(CheckFormValidatePass() && CheckFormValidateUser() && validate() && checkPassAgain()) {
+          $("#Alert").show(0).delay(3000).hide(0);
+          
+      } else {
+          $("#waral").show(0).delay(3000).hide(0);
+
+      }
+
+     
+
+
+  }
+  function CheckFormValidateUser() {
+
+      let x = document.getElementById('username').value;
+      let text = '';
+      if (x == '') {
+          text = " &times; Vui lòng nhập  tên đăng nhập"
+          document.getElementById("note").innerHTML = text;
+          return false
+      }
+      else {
+         text = ''
+      }
+
+      document.getElementById("note").innerHTML = text;
+      return true;
+  }
+  function CheckFormValidateEmail() {
+
+      let x = document.getElementById('email').value;
+      let text = "";
+      if (x == '') {
+          text = " &times; Vui lòng nhập  tên Email"
+      document.getElementById("note2").innerHTML = text;
+      return false
+
+      }  else text = ''
+      document.getElementById("note2").innerHTML = text;
+      return true;
+  }
+  function CheckFormValidatePass() {
+      let x = document.getElementById('password').value;
+      if (x.length < 6) {
+          text = " &times; Vui lòng nhập  mật khẩu lớn hơn 6 kí tự"
+      document.getElementById("note3").innerHTML = text;
+          return false
+      }
+      else {
+          text = ''
+      }
+      document.getElementById("note3").innerHTML = text;
+      return true
+  }
+</script>
+
+<script>
+  // check email
+  const validateEmail = (email) => {
+      return email.match(
+          /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+  const validate = () => {
+      const $result = $('#note2');
+      const email = $('#email').val();
+      $result.text('');
+
+      if (validateEmail(email)) {
+          $result.text(email + ' hợp lệ ');
+          $result.css('color', 'green');
+         setTimeout(()=> $('#note2').html(''), 1000)
+         return true
+          
+      } else {
+          $result.text(email + ' không hợp lệ');
+          $result.css('color', 'red');
+          return false;
+      }
+     
+  }
+  $('#email').on('input', validate);
+  
+  $('#password').on('input', CheckFormValidatePass);
+
+  $('#username').on('input', CheckFormValidateUser);
+  
+  //check password
+  $('#username4').click(PassAgain())
+  function checkPassAgain() {
+       return $('#password').val() == $('#username4').val()
+          
+  }
+  
+  function PassAgain() {
+
+$('#password, #username4').on('keyup', function () {
+
+// $('#username4').click(function(){
+  if($('#username4').val().length == 0) {
+      $('#note4').html('')
+  }
+  else { if ($('#password').val() == $('#username4').val()) {
+  $('#note4').html('Chính xác').css('color', 'green');
+  setTimeout(()=> $('#note4').html(''), 1000)
+  
+
+  } else 
+       $('#note4').html('Chưa trùng khớp').css('color', 'red');
+  
+
+      
+}
+  
+});
+}
+         
+
+</script>
+<!-- check -->
+<script>
+  
+  $('#email').click(function () {
+      CheckFormValidateUser()
+      
+     
+
+     
+
+  })
+  $('#password').click(function () {
+      
+      if($('#email').val().length ==0) {
+          CheckFormValidateEmail()
+      }
+      CheckFormValidateUser()
+     
+
+  })
+  $('#username4').click(function () {
+      CheckFormValidateUser()
+      CheckFormValidatePass()
+      if($('#email').val().length ==0) {
+          CheckFormValidateEmail()
+      }
+      
+
+  })
+
+</script>
+</html>
